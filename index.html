@@ -1,11 +1,367 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Web</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<title>DongNhat Device</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+
+body{
+  background:black;
+  overflow:hidden;
+  color:white;
+}
+
+/* INTRO */
+#intro{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:9999;
+}
+
+/* snow */
+canvas{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+
+.avatar-intro{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid white;
+  box-shadow:0 0 30px white;
+  animation:pulse 1.5s infinite;
+  z-index:1;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+  100%{transform:scale(1)}
+}
+
+.loading span{
+  animation: blink 1.5s infinite;
+}
+.loading span:nth-child(2){animation-delay:0.2s;}
+.loading span:nth-child(3){animation-delay:0.4s;}
+
+@keyframes blink{
+  0%,80%,100%{opacity:0}
+  40%{opacity:1}
+}
+
+/* MAIN */
+#main{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+
+/* background fade */
+.bg{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  transition:opacity 0.8s ease;
+}
+
+#bg1{z-index:0;}
+#bg2{z-index:0; opacity:0;}
+
+/* nút đổi nền giống ảnh */
+.bg-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:70px;
+  height:70px;
+  border-radius:20px;
+  background: linear-gradient(135deg,#60a5fa,#8b5cf6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  color:white;
+  cursor:pointer;
+  z-index:2;
+  box-shadow:0 0 15px rgba(255,255,255,0.4);
+  transition:0.3s;
+}
+
+.bg-btn:hover{
+  transform:scale(1.1);
+}
+
+/* card */
+.container{
+  width:360px;
+  padding:20px;
+  border-radius:25px;
+  backdrop-filter: blur(25px);
+  background: rgba(255,255,255,0.08);
+  text-align:center;
+  z-index:1;
+}
+
+.avatar{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  overflow:hidden;
+  margin:auto;
+  border:3px solid rgba(255,255,255,0.4);
+}
+
+.marquee{
+  margin-top:10px;
+  color:#c084fc;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.marquee span{
+  display:inline-block;
+  padding-left:100%;
+  animation: run 10s linear infinite;
+}
+
+@keyframes run{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-100%);}
+}
+
+/* social */
+.social{
+  display:flex;
+  justify-content:space-between;
+  margin-top:25px;
+}
+
+.icon{
+  width:55px;
+  height:55px;
+  border-radius:18px;
+  background: rgba(255,255,255,0.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:white;
+  transition:0.3s;
+  text-decoration:none;
+}
+
+.icon:hover{
+  transform:scale(1.2);
+}
+
+/* music */
+.music{
+  margin-top:25px;
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+}
+
+.music img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+}
+
+.controls{
+  position:absolute;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:20px;
+  background: rgba(255,255,255,0.15);
+  padding:10px 25px;
+  border-radius:50px;
+}
+</style>
 </head>
-<body style="background:black;color:white;text-align:center;">
-  <h1>TungDuong</h1>
-  <p>Web của tôi</p>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+<canvas id="snowIntro"></canvas>
+
+<div class="avatar-intro">
+  <img src="https://i.imgur.com/8Km9tLL.jpg">
+</div>
+
+<h2>Dong Nhat Device</h2>
+<div class="loading">Loading<span>.</span><span>.</span><span>.</span></div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<div id="bg1" class="bg"></div>
+<div id="bg2" class="bg"></div>
+
+<!-- nút đổi nền -->
+<div class="bg-btn" onclick="changeBg()">
+  <i class="fas fa-image"></i>
+</div>
+
+<canvas id="snow"></canvas>
+
+<div class="container">
+  <div class="avatar">
+    <img src="https://i.imgur.com/8Km9tLL.jpg">
+  </div>
+
+  <h1>DongNhatDevice ✔️</h1>
+
+  <div class="marquee">
+    <span>🔥 Follow me - Facebook • Telegram • TikTok • Zalo • Discord 🔥</span>
+  </div>
+
+  <div class="social">
+    <a href="https://facebook.com/" class="icon"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://t.me/" class="icon"><i class="fab fa-telegram-plane"></i></a>
+    <a href="https://zalo.me/" class="icon">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" width="25">
+    </a>
+    <a href="https://discord.com/" class="icon"><i class="fab fa-discord"></i></a>
+    <a href="https://tiktok.com/" class="icon"><i class="fab fa-tiktok"></i></a>
+  </div>
+
+  <div class="music">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
+    <div class="controls">
+      <i class="fas fa-backward" onclick="prevSong()"></i>
+      <i class="fas fa-play" onclick="toggleMusic()" id="playBtn"></i>
+      <i class="fas fa-forward" onclick="nextSong()"></i>
+    </div>
+  </div>
+</div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+// BACKGROUND
+let bgs=[
+"https://images.unsplash.com/photo-1534796636912-3b95b3ab5986",
+"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+"https://images.unsplash.com/photo-1493244040629-496f6d136cc3"
+];
+
+let index=0;
+let bg1=document.getElementById("bg1");
+let bg2=document.getElementById("bg2");
+let current=1;
+
+bg1.style.backgroundImage=`url(${bgs[0]})`;
+
+function changeBg(){
+  index=(index+1)%bgs.length;
+
+  if(current===1){
+    bg2.style.backgroundImage=`url(${bgs[index]})`;
+    bg2.style.opacity=1;
+    bg1.style.opacity=0;
+    current=2;
+  }else{
+    bg1.style.backgroundImage=`url(${bgs[index]})`;
+    bg1.style.opacity=1;
+    bg2.style.opacity=0;
+    current=1;
+  }
+}
+
+// MUSIC
+let songs=[
+"https://files.catbox.moe/v8cujr.mp3",
+"https://files.catbox.moe/pihloe.mp3"
+];
+
+let i=0;
+let audio=document.getElementById("audio");
+let btn=document.getElementById("playBtn");
+
+audio.src=songs[i];
+
+audio.onplay=()=>btn.classList.replace("fa-play","fa-pause");
+audio.onpause=()=>btn.classList.replace("fa-pause","fa-play");
+
+function toggleMusic(){
+  audio.paused?audio.play():audio.pause();
+}
+
+function nextSong(){
+  i=(i+1)%songs.length;
+  audio.src=songs[i];
+  audio.play();
+}
+
+function prevSong(){
+  i=(i-1+songs.length)%songs.length;
+  audio.src=songs[i];
+  audio.play();
+}
+
+// INTRO
+setTimeout(()=>{
+  intro.style.display="none";
+  main.style.display="flex";
+  audio.play().catch(()=>{});
+},900);
+
+document.addEventListener("click",()=>audio.play().catch(()=>{}));
+
+// SNOW (dùng chung)
+function snowEffect(canvasId){
+  const canvas=document.getElementById(canvasId);
+  const ctx=canvas.getContext("2d");
+
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+
+  let snow=[];
+  for(let i=0;i<100;i++){
+    snow.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*3});
+  }
+
+  setInterval(()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    snow.forEach(f=>{
+      ctx.beginPath();
+      ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+      ctx.fill();
+      f.y+=1;
+      if(f.y>canvas.height) f.y=0;
+    });
+  },30);
+}
+
+snowEffect("snowIntro");
+snowEffect("snow");
+</script>
+
 </body>
 </html>
